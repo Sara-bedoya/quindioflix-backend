@@ -37,4 +37,11 @@ public class CategoriaServiceImpl implements CategoriaService {
                 .map(categoriaMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void eliminarCategoria(Long idCategoria) {
+        Categoria categoria = categoriaRepository.findById(idCategoria)
+                .orElseThrow(() -> new RuntimeException("No existe categoria con id " + idCategoria));
+        categoriaRepository.delete(categoria);
+    }
 }

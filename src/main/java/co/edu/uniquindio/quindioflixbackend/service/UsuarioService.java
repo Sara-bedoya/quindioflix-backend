@@ -10,4 +10,6 @@ public interface UsuarioService {
     ResponseUsuarioDTO crearUsuario(RequestUsuarioDTO dto);
 
     List<ResponseUsuarioDTO> listar();
+
+    void eliminarUsuario(Long idUsuario);
 }

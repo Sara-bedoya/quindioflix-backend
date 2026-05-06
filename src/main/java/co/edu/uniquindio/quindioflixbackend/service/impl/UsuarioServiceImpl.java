@@ -40,4 +40,11 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .map(usuarioMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void eliminarUsuario(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("No existe usuario con id " + idUsuario));
+        usuarioRepository.delete(usuario);
+    }
 }

@@ -36,4 +36,11 @@ public class GeneroServiceImpl implements GeneroService {
                 .map(generoMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void eliminarGenero(Long idGenero) {
+        Genero genero = generoRepository.findById(idGenero)
+                .orElseThrow(() -> new RuntimeException("No existe genero con id " + idGenero));
+        generoRepository.delete(genero);
+    }
 }

@@ -10,4 +10,6 @@ public interface PerfilService {
     ResponsePerfilDTO crearPerfil(RequestPerfilDTO dto);
 
     List<ResponsePerfilDTO> listar();
+
+    void eliminarPerfil(Long idPerfil);
 }

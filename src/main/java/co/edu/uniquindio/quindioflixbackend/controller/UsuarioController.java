@@ -2,7 +2,6 @@ package co.edu.uniquindio.quindioflixbackend.controller;
 
 import co.edu.uniquindio.quindioflixbackend.dto.request.RequestUsuarioDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseUsuarioDTO;
-import  co.edu.uniquindio.quindioflixbackend.model.Usuario;
 import co.edu.uniquindio.quindioflixbackend.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +26,11 @@ public class UsuarioController {
     @GetMapping
     public List<ResponseUsuarioDTO> listar() {
         return usuarioService.listar();
+    }
+
+    @DeleteMapping("/{idUsuario}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long idUsuario) {
+        usuarioService.eliminarUsuario(idUsuario);
+        return ResponseEntity.noContent().build();
     }
 }

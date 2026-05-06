@@ -10,4 +10,6 @@ public interface CategoriaService {
     ResponseCategoriaDTO crearCategoria(RequestCategoriaDTO dto);
 
     List<ResponseCategoriaDTO> listarCategorias();
+
+    void eliminarCategoria(Long idCategoria);
 }

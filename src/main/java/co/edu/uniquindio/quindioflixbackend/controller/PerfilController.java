@@ -27,4 +27,10 @@ public class PerfilController {
     public List<ResponsePerfilDTO> listar() {
         return perfilService.listar();
     }
+
+    @DeleteMapping("/{idPerfil}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long idPerfil) {
+        perfilService.eliminarPerfil(idPerfil);
+        return ResponseEntity.noContent().build();
+    }
 }

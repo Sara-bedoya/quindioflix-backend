@@ -27,4 +27,10 @@ public class CategoriaController {
     public List<ResponseCategoriaDTO> listar() {
         return categoriaService.listarCategorias();
     }
+
+    @DeleteMapping("/{idCategoria}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long idCategoria) {
+        categoriaService.eliminarCategoria(idCategoria);
+        return ResponseEntity.noContent().build();
+    }
 }

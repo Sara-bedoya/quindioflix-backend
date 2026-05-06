@@ -27,4 +27,10 @@ public class GeneroController {
     public List<ResponseGeneroDTO> listar() {
         return generoService.listarGeneros();
     }
+
+    @DeleteMapping("/{idGenero}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long idGenero) {
+        generoService.eliminarGenero(idGenero);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -49,4 +49,11 @@ public class PerfilServiceImpl implements PerfilService {
                 .map(perfilMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void eliminarPerfil(Long idPerfil) {
+        Perfil perfil = perfilRepository.findById(idPerfil)
+                .orElseThrow(() -> new RuntimeException("No existe perfil con id " + idPerfil));
+        perfilRepository.delete(perfil);
+    }
 }

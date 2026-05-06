@@ -10,4 +10,6 @@ public interface GeneroService {
     ResponseGeneroDTO crearGenero(RequestGeneroDTO dto);
 
     List<ResponseGeneroDTO> listarGeneros();
+
+    void eliminarGenero(Long idGenero);
 }
