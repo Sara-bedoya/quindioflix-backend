@@ -1,29 +1,13 @@
 package co.edu.uniquindio.quindioflixbackend.service;
 
-import co.edu.uniquindio.quindioflixbackend.model.Usuario;
-import co.edu.uniquindio.quindioflixbackend.repository.UsuarioRepository;
-import org.springframework.stereotype.Service;
+import co.edu.uniquindio.quindioflixbackend.dto.request.RequestUsuarioDTO;
+import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseUsuarioDTO;
 
 import java.util.List;
 
-@Service
-public class UsuarioService {
+public interface UsuarioService {
 
-    private final UsuarioRepository repository;
+    ResponseUsuarioDTO crearUsuario(RequestUsuarioDTO dto);
 
-    public UsuarioService(UsuarioRepository repository) {
-        this.repository = repository;
-    }
-
-    public List<Usuario> listar() {
-        return repository.findAll();
-    }
-
-    public Usuario guardar(Usuario usuario) {
-        return repository.save(usuario);
-    }
-
-    public Usuario buscarPorId(Long id) {
-        return repository.findById(id).orElse(null);
-    }
+    List<ResponseUsuarioDTO> listar();
 }

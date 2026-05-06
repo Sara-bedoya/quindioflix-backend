@@ -1,8 +1,15 @@
 package co.edu.uniquindio.quindioflixbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import java.util.Date;
+import lombok.*;
 
+import java.util.Date;
+import java.util.List;
+
+
+@Getter
+@Setter
 @Entity
 @Table(name = "USUARIOS")
 public class Usuario {
@@ -39,85 +46,8 @@ public class Usuario {
     @Column(name = "ES_MODERADOR")
     private String esModerador;
 
-    // getters y setters
+    @OneToMany(mappedBy = "usuario")
+    @JsonManagedReference
+    private List<Perfil> perfiles;
 
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public String getNombreCompleto() {
-        return nombreCompleto;
-    }
-
-    public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public Long getIdCiudad() {
-        return idCiudad;
-    }
-
-    public void setIdCiudad(Long idCiudad) {
-        this.idCiudad = idCiudad;
-    }
-
-    public Long getIdPlan() {
-        return idPlan;
-    }
-
-    public void setIdPlan(Long idPlan) {
-        this.idPlan = idPlan;
-    }
-
-    public Long getIdEstado() {
-        return idEstado;
-    }
-
-    public void setIdEstado(Long idEstado) {
-        this.idEstado = idEstado;
-    }
-
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public String getEsModerador() {
-        return esModerador;
-    }
-
-    public void setEsModerador(String esModerador) {
-        this.esModerador = esModerador;
-    }
 }

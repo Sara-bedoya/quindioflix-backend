@@ -1,7 +1,10 @@
 package co.edu.uniquindio.quindioflixbackend.controller;
 
+import co.edu.uniquindio.quindioflixbackend.dto.request.RequestUsuarioDTO;
+import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseUsuarioDTO;
 import  co.edu.uniquindio.quindioflixbackend.model.Usuario;
 import co.edu.uniquindio.quindioflixbackend.service.UsuarioService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,24 +12,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
-    private final UsuarioService service;
 
-    public UsuarioController(UsuarioService service) {
-        this.service = service;
-    }
+    private final UsuarioService usuarioService;
 
-    @GetMapping
-    public List<Usuario> listar() {
-        return service.listar();
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
 
     @PostMapping
-    public Usuario crear(@RequestBody Usuario usuario) {
-        return service.guardar(usuario);
+    public ResponseEntity<ResponseUsuarioDTO> crear(@RequestBody RequestUsuarioDTO dto) {
+        return ResponseEntity.ok(usuarioService.crearUsuario(dto));
     }
 
-    @GetMapping("/{id}")
-    public Usuario buscar(@PathVariable Long id) {
-        return service.buscarPorId(id);
+    @GetMapping
+    public List<ResponseUsuarioDTO> listar() {
+        return usuarioService.listar();
     }
 }
