@@ -1,5 +1,6 @@
 package co.edu.uniquindio.quindioflixbackend.controller;
 
+import co.edu.uniquindio.quindioflixbackend.dto.request.RequestCambioPlanDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.request.RequestRegistroCompletoDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.request.RequestUsuarioDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseRegistroCompletoDTO;
@@ -28,6 +29,12 @@ public class UsuarioController {
     @PostMapping("/registro-completo")
     public ResponseEntity<ResponseRegistroCompletoDTO> registrarCompleto(@RequestBody RequestRegistroCompletoDTO dto) {
         return ResponseEntity.ok(usuarioService.registrarUsuarioCompleto(dto));
+    }
+
+    @PutMapping("/{idUsuario}/cambiar-plan")
+    public ResponseEntity<ResponseUsuarioDTO> cambiarPlan(@PathVariable Long idUsuario,
+                                                          @RequestBody RequestCambioPlanDTO dto) {
+        return ResponseEntity.ok(usuarioService.cambiarPlan(idUsuario, dto));
     }
 
     @GetMapping

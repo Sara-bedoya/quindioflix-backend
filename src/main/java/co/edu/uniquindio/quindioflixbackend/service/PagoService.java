@@ -1,13 +1,17 @@
 package co.edu.uniquindio.quindioflixbackend.service;
 
 import co.edu.uniquindio.quindioflixbackend.dto.request.RequestPagoDTO;
+import co.edu.uniquindio.quindioflixbackend.dto.request.RequestRenovacionMensualDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.response.ResponsePagoDTO;
+import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseRenovacionMensualDTO;
 
 import java.util.List;
 
 public interface PagoService {
 
     ResponsePagoDTO crearPago(RequestPagoDTO dto);
+
+    ResponseRenovacionMensualDTO renovarMensual(Long idUsuario, RequestRenovacionMensualDTO dto);
 
     ResponsePagoDTO obtenerPago(Long idPago);
 

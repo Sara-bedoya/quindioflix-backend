@@ -48,6 +48,11 @@ public class ContenidoController {
         return contenidoService.listarPorEmpleadoResponsable(idEmpleadoResponsable);
     }
 
+    @GetMapping("/recomendado/perfil/{idPerfil}")
+    public ResponseEntity<ResponseContenidoDTO> recomendarPorPerfil(@PathVariable Long idPerfil) {
+        return ResponseEntity.ok(contenidoService.recomendarPorPerfil(idPerfil));
+    }
+
     @PutMapping("/{idContenido}")
     public ResponseEntity<ResponseContenidoDTO> actualizar(@PathVariable Long idContenido,
                                                            @RequestBody RequestContenidoDTO dto) {

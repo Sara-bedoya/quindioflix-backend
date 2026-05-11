@@ -10,4 +10,8 @@ public interface ReferidoRepository extends JpaRepository<Referido, Long> {
     List<Referido> findByIdUsuarioReferidor(Long idUsuarioReferidor);
 
     List<Referido> findByIdUsuarioReferido(Long idUsuarioReferido);
+
+    boolean existsByIdUsuarioReferidorAndEstadoIgnoreCase(Long idUsuarioReferidor, String estado);
+
+    boolean existsByIdUsuarioReferidoAndEstadoIgnoreCase(Long idUsuarioReferido, String estado);
 }

@@ -1,7 +1,9 @@
 package co.edu.uniquindio.quindioflixbackend.controller;
 
 import co.edu.uniquindio.quindioflixbackend.dto.request.RequestPagoDTO;
+import co.edu.uniquindio.quindioflixbackend.dto.request.RequestRenovacionMensualDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.response.ResponsePagoDTO;
+import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseRenovacionMensualDTO;
 import co.edu.uniquindio.quindioflixbackend.service.PagoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,12 @@ public class PagoController {
     @PostMapping
     public ResponseEntity<ResponsePagoDTO> crear(@RequestBody RequestPagoDTO dto) {
         return ResponseEntity.ok(pagoService.crearPago(dto));
+    }
+
+    @PostMapping("/renovacion/{idUsuario}")
+    public ResponseEntity<ResponseRenovacionMensualDTO> renovarMensual(@PathVariable Long idUsuario,
+                                                                        @RequestBody RequestRenovacionMensualDTO dto) {
+        return ResponseEntity.ok(pagoService.renovarMensual(idUsuario, dto));
     }
 
     @GetMapping

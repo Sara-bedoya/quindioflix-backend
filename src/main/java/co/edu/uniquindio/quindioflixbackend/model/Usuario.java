@@ -43,6 +43,9 @@ public class Usuario {
     @Column(name = "FECHA_REGISTRO")
     private Date fechaRegistro;
 
+    @Column(name = "FECHA_ULTIMO_PAGO")
+    private Date fechaUltimoPago;
+
     @Column(name = "ES_MODERADOR")
     private String esModerador;
 

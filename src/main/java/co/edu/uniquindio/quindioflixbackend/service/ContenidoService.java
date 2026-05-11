@@ -19,6 +19,8 @@ public interface ContenidoService {
 
     List<ResponseContenidoDTO> listarPorEmpleadoResponsable(Long idEmpleadoResponsable);
 
+    ResponseContenidoDTO recomendarPorPerfil(Long idPerfil);
+
     ResponseContenidoDTO actualizarContenido(Long idContenido, RequestContenidoDTO dto);
 
     void eliminarContenido(Long idContenido);

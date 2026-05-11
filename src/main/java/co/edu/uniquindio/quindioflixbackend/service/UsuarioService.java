@@ -2,6 +2,7 @@ package co.edu.uniquindio.quindioflixbackend.service;
 
 import co.edu.uniquindio.quindioflixbackend.dto.request.RequestUsuarioDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.request.RequestRegistroCompletoDTO;
+import co.edu.uniquindio.quindioflixbackend.dto.request.RequestCambioPlanDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseRegistroCompletoDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseUsuarioDTO;
 
@@ -12,6 +13,8 @@ public interface UsuarioService {
     ResponseUsuarioDTO crearUsuario(RequestUsuarioDTO dto);
 
     ResponseRegistroCompletoDTO registrarUsuarioCompleto(RequestRegistroCompletoDTO dto);
+
+    ResponseUsuarioDTO cambiarPlan(Long idUsuario, RequestCambioPlanDTO dto);
 
     List<ResponseUsuarioDTO> listar();
 

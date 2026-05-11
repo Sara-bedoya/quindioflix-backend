@@ -1,5 +1,6 @@
 package co.edu.uniquindio.quindioflixbackend.service.impl;
 
+import co.edu.uniquindio.quindioflixbackend.dto.request.RequestCambioPlanDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.request.RequestRegistroCompletoDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.request.RequestUsuarioDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.response.ResponsePagoDTO;
@@ -11,6 +12,7 @@ import co.edu.uniquindio.quindioflixbackend.mapper.PerfilMapper;
 import co.edu.uniquindio.quindioflixbackend.mapper.UsuarioMapper;
 import co.edu.uniquindio.quindioflixbackend.model.Pago;
 import co.edu.uniquindio.quindioflixbackend.model.Perfil;
+import co.edu.uniquindio.quindioflixbackend.model.Plan;
 import co.edu.uniquindio.quindioflixbackend.model.Usuario;
 import co.edu.uniquindio.quindioflixbackend.repository.CiudadRepository;
 import co.edu.uniquindio.quindioflixbackend.repository.EstadoCuentaRepository;
@@ -110,6 +112,26 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .perfil(perfilDTO)
                 .pago(pagoDTO)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public ResponseUsuarioDTO cambiarPlan(Long idUsuario, RequestCambioPlanDTO dto) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("No existe usuario con id " + idUsuario));
+
+        Plan nuevoPlan = planRepository.findById(dto.getIdNuevoPlan())
+                .orElseThrow(() -> new RuntimeException("No existe plan con id " + dto.getIdNuevoPlan()));
+
+        long perfilesActuales = perfilRepository.countByUsuarioIdUsuario(idUsuario);
+        if (nuevoPlan.getMaxPerfiles() != null && perfilesActuales > nuevoPlan.getMaxPerfiles()) {
+            throw new RuntimeException("El usuario tiene " + perfilesActuales
+                    + " perfiles y el nuevo plan solo permite " + nuevoPlan.getMaxPerfiles());
+        }
+
+        usuario.setIdPlan(nuevoPlan.getIdPlan());
+        usuario = usuarioRepository.save(usuario);
+        return usuarioMapper.toDTO(usuario);
     }
 
     @Override
