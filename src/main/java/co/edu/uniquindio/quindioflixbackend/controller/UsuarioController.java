@@ -1,6 +1,8 @@
 package co.edu.uniquindio.quindioflixbackend.controller;
 
+import co.edu.uniquindio.quindioflixbackend.dto.request.RequestRegistroCompletoDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.request.RequestUsuarioDTO;
+import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseRegistroCompletoDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseUsuarioDTO;
 import co.edu.uniquindio.quindioflixbackend.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,11 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<ResponseUsuarioDTO> crear(@RequestBody RequestUsuarioDTO dto) {
         return ResponseEntity.ok(usuarioService.crearUsuario(dto));
+    }
+
+    @PostMapping("/registro-completo")
+    public ResponseEntity<ResponseRegistroCompletoDTO> registrarCompleto(@RequestBody RequestRegistroCompletoDTO dto) {
+        return ResponseEntity.ok(usuarioService.registrarUsuarioCompleto(dto));
     }
 
     @GetMapping
