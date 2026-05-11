@@ -10,4 +10,6 @@ public interface ContenidoRepository extends JpaRepository<Contenido, Long> {
     List<Contenido> findByIdCategoria(Long idCategoria);
 
     List<Contenido> findByGenerosIdGenero(Long idGenero);
+
+    List<Contenido> findByIdEmpleadoResponsable(Long idEmpleadoResponsable);
 }

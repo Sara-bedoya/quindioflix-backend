@@ -43,6 +43,11 @@ public class ContenidoController {
         return contenidoService.listarPorGenero(idGenero);
     }
 
+    @GetMapping("/empleado/{idEmpleadoResponsable}")
+    public List<ResponseContenidoDTO> listarPorEmpleadoResponsable(@PathVariable Long idEmpleadoResponsable) {
+        return contenidoService.listarPorEmpleadoResponsable(idEmpleadoResponsable);
+    }
+
     @PutMapping("/{idContenido}")
     public ResponseEntity<ResponseContenidoDTO> actualizar(@PathVariable Long idContenido,
                                                            @RequestBody RequestContenidoDTO dto) {

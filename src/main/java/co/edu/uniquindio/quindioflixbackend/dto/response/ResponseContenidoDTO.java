@@ -20,5 +20,7 @@ public class ResponseContenidoDTO {
     private Date fechaAgregado;
     private Long idCategoria;
     private String esOriginal;
+    private Long idEmpleadoResponsable;
+    private Integer popularidad;
     private List<ResponseGeneroDTO> generos;
 }

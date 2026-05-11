@@ -5,7 +5,9 @@ import co.edu.uniquindio.quindioflixbackend.dto.request.RequestResolverReporteDT
 import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseReporteDTO;
 import co.edu.uniquindio.quindioflixbackend.mapper.ReporteMapper;
 import co.edu.uniquindio.quindioflixbackend.model.Reporte;
+import co.edu.uniquindio.quindioflixbackend.model.Usuario;
 import co.edu.uniquindio.quindioflixbackend.repository.ReporteRepository;
+import co.edu.uniquindio.quindioflixbackend.repository.UsuarioRepository;
 import co.edu.uniquindio.quindioflixbackend.service.ReporteService;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +19,14 @@ import java.util.stream.Collectors;
 public class ReporteServiceImpl implements ReporteService {
 
     private final ReporteRepository reporteRepository;
+    private final UsuarioRepository usuarioRepository;
     private final ReporteMapper reporteMapper;
 
-    public ReporteServiceImpl(ReporteRepository reporteRepository, ReporteMapper reporteMapper) {
+    public ReporteServiceImpl(ReporteRepository reporteRepository,
+                              UsuarioRepository usuarioRepository,
+                              ReporteMapper reporteMapper) {
         this.reporteRepository = reporteRepository;
+        this.usuarioRepository = usuarioRepository;
         this.reporteMapper = reporteMapper;
     }
 
@@ -65,6 +71,8 @@ public class ReporteServiceImpl implements ReporteService {
     @Override
     public ResponseReporteDTO resolverReporte(Long idReporte, RequestResolverReporteDTO dto) {
         Reporte reporte = buscarReporte(idReporte);
+        validarModerador(dto.getIdModerador());
+
         reporte.setEstado(dto.getEstado());
         reporte.setIdModerador(dto.getIdModerador());
         reporte.setComentarioResolucion(dto.getComentarioResolucion());
@@ -84,5 +92,14 @@ public class ReporteServiceImpl implements ReporteService {
 
     private List<ResponseReporteDTO> convertirLista(List<Reporte> reportes) {
         return reportes.stream().map(reporteMapper::toDTO).collect(Collectors.toList());
+    }
+
+    private void validarModerador(Long idModerador) {
+        Usuario moderador = usuarioRepository.findById(idModerador)
+                .orElseThrow(() -> new RuntimeException("No existe moderador con id " + idModerador));
+
+        if (!"S".equalsIgnoreCase(moderador.getEsModerador())) {
+            throw new RuntimeException("El usuario asignado no es moderador");
+        }
     }
 }

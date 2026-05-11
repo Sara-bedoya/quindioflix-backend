@@ -2,6 +2,7 @@ package co.edu.uniquindio.quindioflixbackend.controller;
 
 import co.edu.uniquindio.quindioflixbackend.dto.request.RequestEmpleadoDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseEmpleadoDTO;
+import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseEmpleadoJerarquiaDTO;
 import co.edu.uniquindio.quindioflixbackend.service.EmpleadoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,16 @@ public class EmpleadoController {
     @GetMapping("/departamento/{idDepartamento}")
     public List<ResponseEmpleadoDTO> listarPorDepartamento(@PathVariable Long idDepartamento) {
         return empleadoService.listarPorDepartamento(idDepartamento);
+    }
+
+    @GetMapping("/departamento/nombre/{nombreDepartamento}")
+    public List<ResponseEmpleadoDTO> listarPorNombreDepartamento(@PathVariable String nombreDepartamento) {
+        return empleadoService.listarPorNombreDepartamento(nombreDepartamento);
+    }
+
+    @GetMapping("/departamento/{idDepartamento}/jerarquia")
+    public ResponseEntity<ResponseEmpleadoJerarquiaDTO> obtenerJerarquiaDepartamento(@PathVariable Long idDepartamento) {
+        return ResponseEntity.ok(empleadoService.obtenerJerarquiaDepartamento(idDepartamento));
     }
 
     @GetMapping("/supervisor/{idSupervisor}")

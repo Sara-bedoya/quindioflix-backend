@@ -15,4 +15,6 @@ public class RequestReproduccionDTO {
     private Long idContenido;
     private LocalDateTime fechaFin;
     private BigDecimal porcentajeVisto;
+    private String dispositivo;
+    private Long idEpisodio;
 }

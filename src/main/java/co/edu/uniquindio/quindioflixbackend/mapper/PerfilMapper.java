@@ -12,6 +12,5 @@ public interface PerfilMapper {
     @Mapping(source = "usuario.idUsuario", target = "idUsuario")
     ResponsePerfilDTO toDTO(Perfil perfil);
 
-    @Mapping(target = "usuario", ignore = true)
     Perfil toEntity(RequestPerfilDTO dto);
 }

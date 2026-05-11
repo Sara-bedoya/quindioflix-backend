@@ -15,5 +15,7 @@ public interface DepartamentoService {
 
     ResponseDepartamentoDTO actualizarDepartamento(Long idDepartamento, RequestDepartamentoDTO dto);
 
+    ResponseDepartamentoDTO asignarJefe(Long idDepartamento, Long idJefe);
+
     void eliminarDepartamento(Long idDepartamento);
 }

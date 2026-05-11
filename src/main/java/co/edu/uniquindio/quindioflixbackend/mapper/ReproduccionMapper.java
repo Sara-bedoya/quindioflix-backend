@@ -11,7 +11,9 @@ public interface ReproduccionMapper {
 
     @Mapping(target = "idReproduccion", ignore = true)
     @Mapping(target = "fechaInicio", ignore = true)
+    @Mapping(target = "episodio", ignore = true)
     Reproduccion toEntity(RequestReproduccionDTO dto);
 
+    @Mapping(source = "episodio.idEpisodio", target = "idEpisodio")
     ResponseReproduccionDTO toDTO(Reproduccion reproduccion);
 }

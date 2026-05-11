@@ -29,4 +29,7 @@ public class Plan {
 
     @Column(name = "PRECIO_MENSUAL")
     private BigDecimal precioMensual;
+
+    @Column(name = "MAX_PERFILES")
+    private Integer maxPerfiles;
 }

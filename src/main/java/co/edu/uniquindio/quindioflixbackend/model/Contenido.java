@@ -44,6 +44,12 @@ public class Contenido {
     @Column(name = "ES_ORIGINAL")
     private String esOriginal;
 
+    @Column(name = "ID_EMPLEADO_RESPONSABLE")
+    private Long idEmpleadoResponsable;
+
+    @Column(name = "POPULARIDAD")
+    private Integer popularidad;
+
     @ManyToMany
     @JoinTable(
             name = "CONTENIDO_GENERO",

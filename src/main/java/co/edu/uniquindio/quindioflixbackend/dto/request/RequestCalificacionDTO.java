@@ -12,4 +12,5 @@ public class RequestCalificacionDTO {
     private Long idContenido;
     private Integer estrellas;
     private String comentario;
+
 }

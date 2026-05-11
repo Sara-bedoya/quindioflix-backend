@@ -33,4 +33,11 @@ public class Reproduccion {
 
     @Column(name = "PORCENTAJE_VISTO")
     private BigDecimal porcentajeVisto;
+
+    @Column(name = "DISPOSITIVO")
+    private String dispositivo;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_EPISODIO")
+    private Episodio episodio;
 }

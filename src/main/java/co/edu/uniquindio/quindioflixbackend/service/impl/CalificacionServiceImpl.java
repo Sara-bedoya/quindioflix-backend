@@ -4,7 +4,9 @@ import co.edu.uniquindio.quindioflixbackend.dto.request.RequestCalificacionDTO;
 import co.edu.uniquindio.quindioflixbackend.dto.response.ResponseCalificacionDTO;
 import co.edu.uniquindio.quindioflixbackend.mapper.CalificacionMapper;
 import co.edu.uniquindio.quindioflixbackend.model.Calificacion;
+import co.edu.uniquindio.quindioflixbackend.model.Reproduccion;
 import co.edu.uniquindio.quindioflixbackend.repository.CalificacionRepository;
+import co.edu.uniquindio.quindioflixbackend.repository.ReproduccionRepository;
 import co.edu.uniquindio.quindioflixbackend.service.CalificacionService;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +18,46 @@ public class CalificacionServiceImpl implements CalificacionService {
 
     private final CalificacionRepository calificacionRepository;
     private final CalificacionMapper calificacionMapper;
+    private final ReproduccionRepository reproduccionRepository;
 
     public CalificacionServiceImpl(CalificacionRepository calificacionRepository,
-                                   CalificacionMapper calificacionMapper) {
+                                   CalificacionMapper calificacionMapper, ReproduccionRepository reproduccionRepository) {
         this.calificacionRepository = calificacionRepository;
         this.calificacionMapper = calificacionMapper;
+        this.reproduccionRepository = reproduccionRepository;
     }
-
     @Override
     public ResponseCalificacionDTO crearCalificacion(RequestCalificacionDTO dto) {
-        Calificacion calificacion = calificacionRepository.save(calificacionMapper.toEntity(dto));
+
+        List<Reproduccion> reproducciones =
+                reproduccionRepository
+                        .findByIdPerfilAndIdContenidoOrderByFechaInicioDesc(
+                                dto.getIdPerfil(),
+                                dto.getIdContenido()
+                        );
+
+        if (reproducciones.isEmpty()) {
+            throw new RuntimeException(
+                    "El perfil no ha reproducido este contenido"
+            );
+        }
+
+        Reproduccion reproduccion = reproducciones.get(0);
+
+        if (reproduccion.getPorcentajeVisto().doubleValue() < 50) {
+
+            throw new RuntimeException(
+                    "Debe ver al menos el 50% del contenido para calificar"
+            );
+        }
+
+        Calificacion calificacion =
+                calificacionMapper.toEntity(dto);
+
+
+        calificacion =
+                calificacionRepository.save(calificacion);
+
         return calificacionMapper.toDTO(calificacion);
     }
 

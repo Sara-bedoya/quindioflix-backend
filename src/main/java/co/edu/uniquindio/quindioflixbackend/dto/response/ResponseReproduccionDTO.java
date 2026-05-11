@@ -17,4 +17,6 @@ public class ResponseReproduccionDTO {
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
     private BigDecimal porcentajeVisto;
+    private String dispositivo;
+    private Long idEpisodio;
 }

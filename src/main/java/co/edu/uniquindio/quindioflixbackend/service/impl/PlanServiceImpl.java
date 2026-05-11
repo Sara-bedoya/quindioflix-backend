@@ -45,6 +45,7 @@ public class PlanServiceImpl implements PlanService {
         plan.setMaxPantallas(dto.getMaxPantallas());
         plan.setCalidadVideo(dto.getCalidadVideo());
         plan.setPrecioMensual(dto.getPrecioMensual());
+        plan.setMaxPerfiles(dto.getMaxPerfiles());
         return planMapper.toDTO(planRepository.save(plan));
     }
 

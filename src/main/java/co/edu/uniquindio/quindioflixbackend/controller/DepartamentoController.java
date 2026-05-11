@@ -39,6 +39,12 @@ public class DepartamentoController {
         return ResponseEntity.ok(departamentoService.actualizarDepartamento(idDepartamento, dto));
     }
 
+    @PutMapping("/{idDepartamento}/jefe/{idJefe}")
+    public ResponseEntity<ResponseDepartamentoDTO> asignarJefe(@PathVariable Long idDepartamento,
+                                                               @PathVariable Long idJefe) {
+        return ResponseEntity.ok(departamentoService.asignarJefe(idDepartamento, idJefe));
+    }
+
     @DeleteMapping("/{idDepartamento}")
     public ResponseEntity<Void> eliminar(@PathVariable Long idDepartamento) {
         departamentoService.eliminarDepartamento(idDepartamento);

@@ -17,5 +17,6 @@ public class RequestContenidoDTO {
     private String clasificacionEdad;
     private Long idCategoria;
     private String esOriginal;
+    private Long idEmpleadoResponsable;
     private List<Long> idsGeneros;
 }

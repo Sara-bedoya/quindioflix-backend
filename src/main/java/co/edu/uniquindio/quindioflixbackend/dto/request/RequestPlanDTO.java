@@ -14,4 +14,5 @@ public class RequestPlanDTO {
     private Integer maxPantallas;
     private String calidadVideo;
     private BigDecimal precioMensual;
+    private Integer maxPerfiles;
 }

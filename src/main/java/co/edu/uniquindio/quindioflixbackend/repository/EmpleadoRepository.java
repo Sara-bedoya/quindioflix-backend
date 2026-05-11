@@ -10,4 +10,8 @@ public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
     List<Empleado> findByIdDepartamento(Long idDepartamento);
 
     List<Empleado> findByIdSupervisor(Long idSupervisor);
+
+    boolean existsByIdDepartamento(Long idDepartamento);
+
+    boolean existsByIdSupervisor(Long idSupervisor);
 }
