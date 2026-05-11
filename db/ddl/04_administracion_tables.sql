@@ -1,7 +1,12 @@
--- =============================================
--- 04_administracion.sql
--- Conexión: quindioflix
--- =============================================
+-- =========================================================
+-- PROYECTO: QUINDIOFLIX
+-- ARCHIVO : 04_administracion_tables.sql
+-- OBJETIVO:
+--     Crear estructuras administrativas:
+--         - DEPARTAMENTOS
+--         - EMPLEADOS
+--         - REPORTES
+-- =========================================================
 
 -- =========================
 -- TABLA DEPARTAMENTOS

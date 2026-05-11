@@ -1,7 +1,15 @@
--- =============================================
--- 03_contenido.sql
--- Conexión: quindioflix
--- =============================================
+-- =========================================================
+-- PROYECTO: QUINDIOFLIX
+-- ARCHIVO : 03_contenido_tables.sql
+-- OBJETIVO:
+--     Crear estructuras relacionadas con contenido:
+--         - GENEROS
+--         - CONTENIDO
+--         - TEMPORADAS
+--         - EPISODIOS
+--         - CONTENIDO_GENERO
+--         - CONTENIDO_RELACIONADO
+-- =========================================================
 
 -- =========================
 -- TABLA GENEROS
