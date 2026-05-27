@@ -1,320 +1,263 @@
-﻿/*
-PROYECTO: QUINDIOFLIX
-SECCION : 3.2.5 Triggers
-ARCHIVO : 3_2_5_triggers.sql
-OBJETIVO: Triggers de generacion de identificadores y automatizacion
-ORIGEN  : triggers\01_id_triggers.sql
-*/
--- =========================================================
--- PROYECTO: QUINDIOFLIX
--- ARCHIVO : 01_id_triggers.sql
--- OBJETIVO:
---     Automatizar la generación de IDs primarios
---     mediante sequences en todas las tablas.
--- =========================================================
+﻿/* =========================================================
+   3.2.5 DISPARADORES (TRIGGERS)
+   Proyecto: QuindioFlix
+========================================================= */
 
 
--- =========================================================
--- TRIGGER: PLANES
--- =========================================================
 
-CREATE OR REPLACE TRIGGER trg_planes
-    BEFORE INSERT ON PLANES
-    FOR EACH ROW
+/* =========================================================
+   TRIGGER A
+   Verificar cuenta activa en REPRODUCCIONES
+========================================================= */
+
+CREATE OR REPLACE TRIGGER TRG_VALIDAR_CUENTA_ACTIVA
+BEFORE INSERT ON REPRODUCCIONES
+FOR EACH ROW
+DECLARE
+
+V_ESTADO VARCHAR2(20);
+
 BEGIN
 
-    IF :NEW.id_plan IS NULL THEN
-        :NEW.id_plan := seq_planes.NEXTVAL;
-    END IF;
+SELECT E.NOMBRE_ESTADO
+INTO V_ESTADO
+FROM PERFILES P
+         JOIN USUARIOS U
+              ON P.ID_USUARIO = U.ID_USUARIO
+         JOIN ESTADOS_CUENTA E
+              ON U.ID_ESTADO = E.ID_ESTADO
+WHERE P.ID_PERFIL = :NEW.ID_PERFIL;
+
+IF UPPER(V_ESTADO) <> 'ACTIVO' THEN
+        RAISE_APPLICATION_ERROR(
+            -20001,
+            'La cuenta del usuario no esta activa'
+        );
+END IF;
 
 END;
 /
 
 
--- =========================================================
--- TRIGGER: CIUDADES
--- =========================================================
 
-CREATE OR REPLACE TRIGGER trg_ciudades
-    BEFORE INSERT ON CIUDADES
-    FOR EACH ROW
+
+/* =========================================================
+   TRIGGER B
+   Validar maximo de perfiles segun el plan
+========================================================= */
+
+CREATE OR REPLACE TRIGGER TRG_VALIDAR_MAX_PERFILES
+BEFORE INSERT ON PERFILES
+FOR EACH ROW
+DECLARE
+
+V_TOTAL_PERFILES NUMBER;
+    V_MAX_PERFILES NUMBER;
+
 BEGIN
 
-    IF :NEW.id_ciudad IS NULL THEN
-        :NEW.id_ciudad := seq_ciudades.NEXTVAL;
-    END IF;
+    -- Obtener cantidad actual de perfiles
+SELECT COUNT(*)
+INTO V_TOTAL_PERFILES
+FROM PERFILES
+WHERE ID_USUARIO = :NEW.ID_USUARIO;
+
+-- Obtener limite segun el plan
+SELECT PL.MAX_PERFILES
+INTO V_MAX_PERFILES
+FROM USUARIOS U
+         JOIN PLANES PL
+              ON U.ID_PLAN = PL.ID_PLAN
+WHERE U.ID_USUARIO = :NEW.ID_USUARIO;
+
+-- Validar limite
+IF V_TOTAL_PERFILES >= V_MAX_PERFILES THEN
+
+        RAISE_APPLICATION_ERROR(
+            -20002,
+            'El usuario excede el maximo de perfiles permitidos'
+        );
+
+END IF;
 
 END;
 /
 
 
--- =========================================================
--- TRIGGER: ESTADOS_CUENTA
--- =========================================================
 
-CREATE OR REPLACE TRIGGER trg_estados
-    BEFORE INSERT ON ESTADOS_CUENTA
-    FOR EACH ROW
+
+/* =========================================================
+   TRIGGER C
+   Verificar reproduccion minima para calificar
+========================================================= */
+
+CREATE OR REPLACE TRIGGER TRG_VALIDAR_CALIFICACION
+BEFORE INSERT ON CALIFICACIONES
+FOR EACH ROW
+DECLARE
+
+V_REPRODUCCION NUMBER;
+
 BEGIN
 
-    IF :NEW.id_estado IS NULL THEN
-        :NEW.id_estado := seq_estados.NEXTVAL;
-    END IF;
+SELECT COUNT(*)
+INTO V_REPRODUCCION
+FROM REPRODUCCIONES
+WHERE ID_PERFIL = :NEW.ID_PERFIL
+  AND ID_CONTENIDO = :NEW.ID_CONTENIDO
+  AND PORCENTAJE_VISTO >= 50;
+
+IF V_REPRODUCCION = 0 THEN
+
+        RAISE_APPLICATION_ERROR(
+            -20003,
+            'El perfil debe ver al menos el 50% del contenido antes de calificar'
+        );
+
+END IF;
 
 END;
 /
 
 
--- =========================================================
--- TRIGGER: CATEGORIAS
--- =========================================================
 
-CREATE OR REPLACE TRIGGER trg_categorias
-    BEFORE INSERT ON CATEGORIAS
-    FOR EACH ROW
+
+/* =========================================================
+   TRIGGER D
+   Actualizar estado y fecha despues de pago exitoso
+========================================================= */
+
+CREATE OR REPLACE TRIGGER TRG_ACTUALIZAR_ESTADO_PAGO
+AFTER INSERT ON PAGOS
+DECLARE
 BEGIN
 
-    IF :NEW.id_categoria IS NULL THEN
-        :NEW.id_categoria := seq_categorias.NEXTVAL;
-    END IF;
+UPDATE USUARIOS
+SET
+    ID_ESTADO = (
+        SELECT ID_ESTADO
+        FROM ESTADOS_CUENTA
+        WHERE UPPER(NOMBRE_ESTADO) = 'ACTIVO'
+    ),
+    FECHA_ULTIMO_PAGO = SYSDATE
+WHERE ID_USUARIO IN (
+    SELECT ID_USUARIO
+    FROM PAGOS
+    WHERE UPPER(ESTADO_PAGO) = 'EXITOSO'
+);
 
 END;
 /
 
 
--- =========================================================
--- TRIGGER: USUARIOS
--- =========================================================
 
-CREATE OR REPLACE TRIGGER trg_usuarios
-    BEFORE INSERT ON USUARIOS
-    FOR EACH ROW
-BEGIN
 
-    IF :NEW.id_usuario IS NULL THEN
-        :NEW.id_usuario := seq_usuarios.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: PERFILES
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_perfiles
-    BEFORE INSERT ON PERFILES
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_perfil IS NULL THEN
-        :NEW.id_perfil := seq_perfiles.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: REFERIDOS
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_referidos
-    BEFORE INSERT ON REFERIDOS
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_referido IS NULL THEN
-        :NEW.id_referido := seq_referidos.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: PAGOS
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_pagos
-    BEFORE INSERT ON PAGOS
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_pago IS NULL THEN
-        :NEW.id_pago := seq_pagos.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: GENEROS
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_generos
-    BEFORE INSERT ON GENEROS
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_genero IS NULL THEN
-        :NEW.id_genero := seq_generos.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: CONTENIDO
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_contenido
-    BEFORE INSERT ON CONTENIDO
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_contenido IS NULL THEN
-        :NEW.id_contenido := seq_contenido.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: TEMPORADAS
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_temporadas
-    BEFORE INSERT ON TEMPORADAS
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_temporada IS NULL THEN
-        :NEW.id_temporada := seq_temporadas.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: EPISODIOS
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_episodios
-    BEFORE INSERT ON EPISODIOS
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_episodio IS NULL THEN
-        :NEW.id_episodio := seq_episodios.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: DEPARTAMENTOS
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_departamentos
-    BEFORE INSERT ON DEPARTAMENTOS
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_departamento IS NULL THEN
-        :NEW.id_departamento := seq_departamentos.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: EMPLEADOS
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_empleados
-    BEFORE INSERT ON EMPLEADOS
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_empleado IS NULL THEN
-        :NEW.id_empleado := seq_empleados.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: REPORTES
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_reportes
-    BEFORE INSERT ON REPORTES
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_reporte IS NULL THEN
-        :NEW.id_reporte := seq_reportes.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: REPRODUCCIONES
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_reproducciones
-    BEFORE INSERT ON REPRODUCCIONES
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_reproduccion IS NULL THEN
-        :NEW.id_reproduccion := seq_reproducciones.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: CALIFICACIONES
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_calificaciones
-    BEFORE INSERT ON CALIFICACIONES
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_calificacion IS NULL THEN
-        :NEW.id_calificacion := seq_calificaciones.NEXTVAL;
-    END IF;
-
-END;
-/
-
-
--- =========================================================
--- TRIGGER: FAVORITOS
--- =========================================================
-
-CREATE OR REPLACE TRIGGER trg_favoritos
-    BEFORE INSERT ON FAVORITOS
-    FOR EACH ROW
-BEGIN
-
-    IF :NEW.id_favorito IS NULL THEN
-        :NEW.id_favorito := seq_favoritos.NEXTVAL;
-    END IF;
-
-END;
-/
+/* =========================================================
+   PRUEBAS DE FUNCIONAMIENTO
+========================================================= */
+
+
+------------------------------------------------------------
+-- PRUEBA TRIGGER A
+------------------------------------------------------------
+
+INSERT INTO REPRODUCCIONES (
+    ID_REPRODUCCION,
+    ID_PERFIL,
+    ID_CONTENIDO,
+    FECHA_INICIO,
+    FECHA_FIN,
+    PORCENTAJE_VISTO,
+    DISPOSITIVO
+)
+VALUES (
+    SEQ_REPRODUCCIONES.NEXTVAL,
+    1,
+    21,
+    SYSTIMESTAMP,
+    SYSTIMESTAMP + INTERVAL '2' HOUR,
+    80,
+    'TV'
+);
+
+
+
+------------------------------------------------------------
+-- PRUEBA TRIGGER B
+------------------------------------------------------------
+
+INSERT INTO PERFILES (
+    ID_PERFIL,
+    ID_USUARIO,
+    NOMBRE_PERFIL,
+    AVATAR,
+    TIPO
+)
+VALUES (
+           SEQ_PERFILES.NEXTVAL,
+           1,
+           'Perfil Extra',
+           'default.png',
+           'ADULTO'
+       );
+
+-- Debe mostrar:
+-- ORA-20002: El usuario excede el maximo de perfiles permitidos
+
+
+
+------------------------------------------------------------
+-- PRUEBA TRIGGER C
+------------------------------------------------------------
+
+INSERT INTO CALIFICACIONES (
+    ID_CALIFICACION,
+    ID_PERFIL,
+    ID_CONTENIDO,
+    ESTRELLAS,
+    COMENTARIO
+)
+VALUES (
+           SEQ_CALIFICACIONES.NEXTVAL,
+           1,
+           30,
+           5,
+           'Excelente contenido'
+       );
+
+-- Debe mostrar:
+-- ORA-20003
+
+
+
+------------------------------------------------------------
+-- PRUEBA TRIGGER D
+------------------------------------------------------------
+
+INSERT INTO PAGOS (
+    ID_PAGO,
+    ID_USUARIO,
+    ID_PLAN,
+    FECHA_PAGO,
+    MONTO,
+    METODO_PAGO,
+    ESTADO_PAGO
+)
+VALUES (
+           SEQ_PAGOS.NEXTVAL,
+           1,
+           4,
+           SYSDATE,
+           35000,
+           'TARJETA',
+           'EXITOSO'
+       );
+
+
+-- Verificar actualizacion
+SELECT
+    ID_USUARIO,
+    ID_ESTADO,
+    FECHA_ULTIMO_PAGO
+FROM USUARIOS
+WHERE ID_USUARIO = 1;
