@@ -1,3 +1,10 @@
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : DDL
+ARCHIVO : 01_base_tables.sql
+OBJETIVO: Tablas base del modelo QuindioFlix
+ORIGEN  : ddl\01_base_tables.sql
+*/
 -- =========================================================
 -- PROYECTO: QUINDIOFLIX
 -- ARCHIVO : 01_base_tables.sql

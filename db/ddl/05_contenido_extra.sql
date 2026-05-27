@@ -1,3 +1,10 @@
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : DDL
+ARCHIVO : 05_contenido_extra.sql
+OBJETIVO: Tablas y relaciones adicionales de contenido
+ORIGEN  : ddl\05_contenido_extra.sql
+*/
 -- =========================================================
 -- PROYECTO: QUINDIOFLIX
 -- ARCHIVO : 05_contenido_extra.sql

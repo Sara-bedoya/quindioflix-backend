@@ -15,4 +15,5 @@ public class ResponseEmpleadoDTO {
     private Long idDepartamento;
     private Long idSupervisor;
     private String cargo;
+    private String rol;
 }

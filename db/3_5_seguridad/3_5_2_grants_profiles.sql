@@ -1,23 +1,10 @@
--- =========================================================
--- PROYECTO: QUINDIOFLIX
--- ARCHIVO : 01_user_and_permissions.sql
--- AUTOR   : Equipo QuindioFlix
--- OBJETIVO:
---     Crear el usuario exclusivo del proyecto y asignar
---     privilegios mínimos necesarios para el desarrollo.
---
--- IMPORTANTE:
---     Este script debe ejecutarse con el usuario SYSTEM.
--- =========================================================
-
--- =========================================================
--- CREACION DEL USUARIO
--- =========================================================
-
-CREATE USER quindioflix_user
-    IDENTIFIED BY quindio2024;
-
-
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : 3.5.2 Grants y profiles
+ARCHIVO : 3_5_2_grants_profiles.sql
+OBJETIVO: Privilegios, cuotas y configuracion de acceso
+ORIGEN  : security\01_user_and_permissions.sql
+*/
 -- =========================================================
 -- PRIVILEGIOS DEL SISTEMA
 -- =========================================================

@@ -1,3 +1,10 @@
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : DDL
+ARCHIVO : 06_reproducciones_tables.sql
+OBJETIVO: Tablas de reproducciones, calificaciones y favoritos
+ORIGEN  : ddl\06_reproducciones_tables.sql
+*/
 -- =========================================================
 -- PROYECTO: QUINDIOFLIX
 -- ARCHIVO : 06_reproducciones_tables.sql

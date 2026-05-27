@@ -1,3 +1,10 @@
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : DDL
+ARCHIVO : 04_administracion_tables.sql
+OBJETIVO: Tablas administrativas de departamentos, empleados y reportes
+ORIGEN  : ddl\04_administracion_tables.sql
+*/
 -- =========================================================
 -- PROYECTO: QUINDIOFLIX
 -- ARCHIVO : 04_administracion_tables.sql
@@ -36,6 +43,7 @@ CREATE TABLE EMPLEADOS (
                            id_empleado NUMBER,
                            nombre_completo VARCHAR2(200) NOT NULL,
                            email VARCHAR2(100) NOT NULL,
+                           password VARCHAR2(100),
                            telefono VARCHAR2(20),
                            id_departamento NUMBER,
                            id_supervisor NUMBER,

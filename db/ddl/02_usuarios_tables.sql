@@ -1,3 +1,10 @@
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : DDL
+ARCHIVO : 02_usuarios_tables.sql
+OBJETIVO: Tablas de usuarios, perfiles, referidos y pagos
+ORIGEN  : ddl\02_usuarios_tables.sql
+*/
 -- =========================================================
 -- PROYECTO: QUINDIOFLIX
 -- ARCHIVO : 02_usuarios_tables.sql
@@ -21,6 +28,8 @@ CREATE TABLE USUARIOS (
                           nombre_completo VARCHAR2(200) NOT NULL,
 
                           email VARCHAR2(100) NOT NULL,
+
+                          password VARCHAR2(100),
 
                           telefono VARCHAR2(20),
 

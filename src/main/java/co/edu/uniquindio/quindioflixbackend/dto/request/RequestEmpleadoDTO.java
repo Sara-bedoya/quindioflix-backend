@@ -10,6 +10,7 @@ public class RequestEmpleadoDTO {
 
     private String nombreCompleto;
     private String email;
+    private String password;
     private String telefono;
     private Long idDepartamento;
     private Long idSupervisor;

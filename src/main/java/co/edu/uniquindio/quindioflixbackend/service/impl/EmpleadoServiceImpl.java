@@ -8,7 +8,9 @@ import co.edu.uniquindio.quindioflixbackend.model.Departamento;
 import co.edu.uniquindio.quindioflixbackend.model.Empleado;
 import co.edu.uniquindio.quindioflixbackend.repository.DepartamentoRepository;
 import co.edu.uniquindio.quindioflixbackend.repository.EmpleadoRepository;
+import co.edu.uniquindio.quindioflixbackend.repository.ContenidoRepository;
 import co.edu.uniquindio.quindioflixbackend.service.EmpleadoService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,13 +21,16 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 
     private final EmpleadoRepository empleadoRepository;
     private final DepartamentoRepository departamentoRepository;
+    private final ContenidoRepository contenidoRepository;
     private final EmpleadoMapper empleadoMapper;
 
     public EmpleadoServiceImpl(EmpleadoRepository empleadoRepository,
                                DepartamentoRepository departamentoRepository,
+                               ContenidoRepository contenidoRepository,
                                EmpleadoMapper empleadoMapper) {
         this.empleadoRepository = empleadoRepository;
         this.departamentoRepository = departamentoRepository;
+        this.contenidoRepository = contenidoRepository;
         this.empleadoMapper = empleadoMapper;
     }
 
@@ -33,8 +38,11 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     public ResponseEmpleadoDTO crearEmpleado(RequestEmpleadoDTO dto) {
         validarDepartamento(dto.getIdDepartamento());
         validarSupervisor(null, dto.getIdDepartamento(), dto.getIdSupervisor());
+        validarPassword(dto.getPassword());
 
-        Empleado empleado = empleadoRepository.save(empleadoMapper.toEntity(dto));
+        Empleado empleado = empleadoMapper.toEntity(dto);
+        empleado.setPassword(dto.getPassword());
+        empleado = empleadoRepository.save(empleado);
         return empleadoMapper.toDTO(empleado);
     }
 
@@ -90,6 +98,9 @@ public class EmpleadoServiceImpl implements EmpleadoService {
 
         empleado.setNombreCompleto(dto.getNombreCompleto());
         empleado.setEmail(dto.getEmail());
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            empleado.setPassword(dto.getPassword());
+        }
         empleado.setTelefono(dto.getTelefono());
         empleado.setIdDepartamento(dto.getIdDepartamento());
         empleado.setIdSupervisor(dto.getIdSupervisor());
@@ -98,20 +109,26 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     }
 
     @Override
+    @Transactional
     public void eliminarEmpleado(Long idEmpleado) {
         Empleado empleado = buscarEmpleado(idEmpleado);
 
-        if (empleadoRepository.existsByIdSupervisor(idEmpleado)) {
-            throw new RuntimeException("No se puede eliminar un empleado que supervisa a otros empleados");
-        }
+        empleadoRepository.findByIdSupervisor(idEmpleado).forEach(supervisado -> {
+            supervisado.setIdSupervisor(null);
+            empleadoRepository.save(supervisado);
+        });
 
-        boolean esJefe = departamentoRepository.findAll()
-                .stream()
-                .anyMatch(departamento -> idEmpleado.equals(departamento.getIdJefe()));
+        departamentoRepository.findAll().forEach(departamento -> {
+            if (idEmpleado.equals(departamento.getIdJefe())) {
+                departamento.setIdJefe(null);
+                departamentoRepository.save(departamento);
+            }
+        });
 
-        if (esJefe) {
-            throw new RuntimeException("No se puede eliminar un empleado asignado como jefe de departamento");
-        }
+        contenidoRepository.findByIdEmpleadoResponsable(idEmpleado).forEach(contenido -> {
+            contenido.setIdEmpleadoResponsable(null);
+            contenidoRepository.save(contenido);
+        });
 
         empleadoRepository.delete(empleado);
     }
@@ -149,6 +166,12 @@ public class EmpleadoServiceImpl implements EmpleadoService {
                 idDepartamento,
                 "El supervisor debe pertenecer al mismo departamento del empleado"
         );
+    }
+
+    private void validarPassword(String password) {
+        if (password == null || password.isBlank()) {
+            throw new RuntimeException("La contraseña del empleado es obligatoria");
+        }
     }
 
     private void validarEmpleadoPerteneceDepartamento(Empleado empleado, Long idDepartamento, String mensaje) {

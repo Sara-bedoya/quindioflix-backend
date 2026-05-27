@@ -1,3 +1,10 @@
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : 3.2.5 Triggers
+ARCHIVO : 3_2_5_triggers.sql
+OBJETIVO: Triggers de generacion de identificadores y automatizacion
+ORIGEN  : triggers\01_id_triggers.sql
+*/
 -- =========================================================
 -- PROYECTO: QUINDIOFLIX
 -- ARCHIVO : 01_id_triggers.sql

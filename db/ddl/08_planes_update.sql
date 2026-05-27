@@ -1,3 +1,10 @@
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : DDL
+ARCHIVO : 08_planes_update.sql
+OBJETIVO: Actualizaciones estructurales de planes
+ORIGEN  : ddl\08_planes_update.sql
+*/
 -- =========================================================
 -- PROYECTO: QUINDIOFLIX
 -- ARCHIVO : 08_planes_update.sql

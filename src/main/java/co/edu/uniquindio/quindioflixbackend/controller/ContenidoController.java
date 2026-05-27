@@ -28,9 +28,20 @@ public class ContenidoController {
         return contenidoService.listarContenidos();
     }
 
+    @GetMapping("/perfil/{idPerfil}")
+    public List<ResponseContenidoDTO> listarDisponiblesParaPerfil(@PathVariable Long idPerfil) {
+        return contenidoService.listarDisponiblesParaPerfil(idPerfil);
+    }
+
     @GetMapping("/{idContenido}")
     public ResponseEntity<ResponseContenidoDTO> obtener(@PathVariable Long idContenido) {
         return ResponseEntity.ok(contenidoService.obtenerContenido(idContenido));
+    }
+
+    @GetMapping("/{idContenido}/perfil/{idPerfil}")
+    public ResponseEntity<ResponseContenidoDTO> obtenerParaPerfil(@PathVariable Long idContenido,
+                                                                  @PathVariable Long idPerfil) {
+        return ResponseEntity.ok(contenidoService.obtenerContenidoParaPerfil(idContenido, idPerfil));
     }
 
     @GetMapping("/categoria/{idCategoria}")

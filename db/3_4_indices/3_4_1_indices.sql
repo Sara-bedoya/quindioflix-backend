@@ -1,3 +1,10 @@
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : 3.4.1 Indices
+ARCHIVO : 3_4_1_indices.sql
+OBJETIVO: Indices para optimizacion de consultas
+ORIGEN  : indexes\01_indexes.sql
+*/
 -- =========================================================
 -- PROYECTO: QUINDIOFLIX
 -- ARCHIVO : 01_indexes.sql

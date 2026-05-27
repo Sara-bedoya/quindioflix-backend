@@ -1,3 +1,10 @@
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : DDL
+ARCHIVO : 03_contenido_tables.sql
+OBJETIVO: Tablas de contenido, generos, temporadas y episodios
+ORIGEN  : ddl\03_contenido_tables.sql
+*/
 -- =========================================================
 -- PROYECTO: QUINDIOFLIX
 -- ARCHIVO : 03_contenido_tables.sql

@@ -13,6 +13,7 @@ public class RequestUsuarioDTO {
 
     private String nombreCompleto;
     private String email;
+    private String password;
     private String telefono;
     private Date fechaNacimiento;
 

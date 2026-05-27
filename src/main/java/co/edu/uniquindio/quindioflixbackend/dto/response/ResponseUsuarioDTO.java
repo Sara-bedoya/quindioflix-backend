@@ -21,6 +21,8 @@ public class ResponseUsuarioDTO {
     private Long idCiudad;
     private Long idEstado;
 
+    private String rol;
+
     private List<ResponsePerfilDTO> perfiles;
 
 }

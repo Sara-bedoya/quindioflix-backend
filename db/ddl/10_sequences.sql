@@ -1,3 +1,10 @@
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : DDL Secuencias
+ARCHIVO : 10_sequences.sql
+OBJETIVO: Secuencias centralizadas del esquema QuindioFlix
+ORIGEN  : sequences\01_sequences.sql
+*/
 -- =========================================================
 -- PROYECTO: QUINDIOFLIX
 -- ARCHIVO : 01_sequences.sql

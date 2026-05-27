@@ -22,6 +22,9 @@ public class Empleado {
     @Column(name = "EMAIL")
     private String email;
 
+    @Column(name = "PASSWORD")
+    private String password;
+
     @Column(name = "TELEFONO")
     private String telefono;
 

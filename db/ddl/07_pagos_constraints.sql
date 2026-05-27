@@ -1,3 +1,10 @@
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : DDL
+ARCHIVO : 07_pagos_constraints.sql
+OBJETIVO: Restricciones complementarias de pagos
+ORIGEN  : ddl\07_pagos_constraints.sql
+*/
 -- =========================================================
 -- PROYECTO: QUINDIOFLIX
 -- ARCHIVO : 07_pagos_constraints.sql

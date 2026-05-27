@@ -53,4 +53,11 @@ public class Usuario {
     @JsonManagedReference
     private List<Perfil> perfiles;
 
+    @Column(name = "PASSWORD")
+    private String password;
+
+    @Transient
+    public String getRol() {
+        return "S".equalsIgnoreCase(esModerador) ? "MODERADOR" : "USUARIO";
+    }
 }

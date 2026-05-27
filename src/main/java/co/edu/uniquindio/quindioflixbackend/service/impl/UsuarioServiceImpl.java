@@ -78,6 +78,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = new Usuario();
         usuario.setNombreCompleto(dto.getNombreCompleto());
         usuario.setEmail(dto.getEmail());
+        usuario.setPassword(dto.getPassword());
         usuario.setTelefono(dto.getTelefono());
         usuario.setFechaNacimiento(dto.getFechaNacimiento());
         usuario.setIdCiudad(dto.getIdCiudad());
@@ -150,8 +151,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     private void validarRegistroCompleto(RequestRegistroCompletoDTO dto) {
-        if (usuarioRepository.existsByEmail(dto.getEmail())) {
+        if (usuarioRepository.countByEmailNative(dto.getEmail()) > 0) {
             throw new RuntimeException("Ya existe un usuario con el email " + dto.getEmail());
+        }
+
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) {
+            throw new RuntimeException("La contraseña es obligatoria");
         }
 
         planRepository.findById(dto.getIdPlan())

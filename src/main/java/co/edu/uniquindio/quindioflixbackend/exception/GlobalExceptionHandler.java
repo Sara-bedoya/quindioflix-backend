@@ -30,6 +30,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleException(
             Exception ex
     ) {
+        ex.printStackTrace();
 
         ApiError error = ApiError.builder()
                 .mensaje("Error interno del servidor")

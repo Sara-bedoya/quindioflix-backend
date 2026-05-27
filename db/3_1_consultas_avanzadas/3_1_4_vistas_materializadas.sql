@@ -1,3 +1,10 @@
+﻿/*
+PROYECTO: QUINDIOFLIX
+SECCION : 3.1.4 Vistas materializadas
+ARCHIVO : 3_1_4_vistas_materializadas.sql
+OBJETIVO: Vistas materializadas para reportes y analitica
+ORIGEN  : materialized_views\01_materialized_views.sql
+*/
 -- =========================================================
 -- PROYECTO: QUINDIOFLIX
 -- ARCHIVO : 01_materialized_views.sql

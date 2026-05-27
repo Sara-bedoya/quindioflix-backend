@@ -13,6 +13,10 @@ public interface ContenidoService {
 
     List<ResponseContenidoDTO> listarContenidos();
 
+    List<ResponseContenidoDTO> listarDisponiblesParaPerfil(Long idPerfil);
+
+    ResponseContenidoDTO obtenerContenidoParaPerfil(Long idContenido, Long idPerfil);
+
     List<ResponseContenidoDTO> listarPorCategoria(Long idCategoria);
 
     List<ResponseContenidoDTO> listarPorGenero(Long idGenero);
